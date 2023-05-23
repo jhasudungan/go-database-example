@@ -1,4 +1,4 @@
-# Go-Database-Example
+# Go Database Example
 
 An example project about connecting and querying database (RDBMS) in go program. I use Postgre and pq-lib standard library here.
 
