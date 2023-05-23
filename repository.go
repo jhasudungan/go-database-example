@@ -18,10 +18,10 @@ returning a list of pointers ([]*Transaction) could be a better fit.
 
 */
 type TransactionsRepository interface {
-	FindAll() ([]*Transaction, error)
-	FindAllWithPage(page int64) ([]*Transaction, error)
-	Insert(newTransaction *Transaction) (*Transaction, error)
-	Update(newTransaction *Transaction) (*Transaction, error)
+	FindAll() ([]Transaction, error)
+	FindAllWithPage(page int64) ([]Transaction, error)
+	Insert(newTransaction Transaction) (Transaction, error)
+	Update(newTransaction Transaction) (Transaction, error)
 	Delete(transactionId string) error
 }
 
@@ -29,9 +29,9 @@ type TransactionsRepositoryImpl struct {
 	DbTools DbTools
 }
 
-func (t *TransactionsRepositoryImpl) FindAll() ([]*Transaction, error) {
+func (t *TransactionsRepositoryImpl) FindAll() ([]Transaction, error) {
 
-	result := make([]*Transaction, 0)
+	result := make([]Transaction, 0)
 
 	con, err := t.DbTools.CreateConnection()
 	defer con.Close()
@@ -54,7 +54,7 @@ func (t *TransactionsRepositoryImpl) FindAll() ([]*Transaction, error) {
 
 	for rows.Next() {
 
-		transaction := &Transaction{}
+		transaction := Transaction{}
 
 		err := rows.Scan(&transaction.TransactionId,
 			&transaction.TransactionTotal,
@@ -75,9 +75,9 @@ func (t *TransactionsRepositoryImpl) FindAll() ([]*Transaction, error) {
 
 }
 
-func (t *TransactionsRepositoryImpl) FindAllWithPage(page int64) ([]*Transaction, error) {
+func (t *TransactionsRepositoryImpl) FindAllWithPage(page int64) ([]Transaction, error) {
 
-	result := make([]*Transaction, 0)
+	result := make([]Transaction, 0)
 
 	con, err := t.DbTools.CreateConnection()
 	defer con.Close()
@@ -115,7 +115,7 @@ func (t *TransactionsRepositoryImpl) FindAllWithPage(page int64) ([]*Transaction
 
 	for rows.Next() {
 
-		transaction := &Transaction{}
+		transaction := Transaction{}
 
 		err := rows.Scan(&transaction.TransactionId,
 			&transaction.TransactionTotal,
@@ -136,7 +136,7 @@ func (t *TransactionsRepositoryImpl) FindAllWithPage(page int64) ([]*Transaction
 
 }
 
-func (t *TransactionsRepositoryImpl) Insert(newTransaction *Transaction) (*Transaction, error) {
+func (t *TransactionsRepositoryImpl) Insert(newTransaction Transaction) (Transaction, error) {
 
 	con, err := t.DbTools.CreateConnection()
 	defer con.Close()
@@ -153,9 +153,9 @@ func (t *TransactionsRepositoryImpl) Insert(newTransaction *Transaction) (*Trans
 		"now(), now())")
 
 	// Get The Value From the pointer
-	_, err = con.Exec(sql, &newTransaction.TransactionId,
-		&newTransaction.TransactionTotal,
-		&newTransaction.TransactionPIC)
+	_, err = con.Exec(sql, newTransaction.TransactionId,
+		newTransaction.TransactionTotal,
+		newTransaction.TransactionPIC)
 
 	if err != nil {
 		return newTransaction, err
@@ -164,7 +164,7 @@ func (t *TransactionsRepositoryImpl) Insert(newTransaction *Transaction) (*Trans
 	return newTransaction, nil
 }
 
-func (t *TransactionsRepositoryImpl) Update(newTransaction *Transaction) (*Transaction, error) {
+func (t *TransactionsRepositoryImpl) Update(newTransaction Transaction) (Transaction, error) {
 
 	con, err := t.DbTools.CreateConnection()
 	defer con.Close()
@@ -180,9 +180,9 @@ func (t *TransactionsRepositoryImpl) Update(newTransaction *Transaction) (*Trans
 		"where transaction_id = $3")
 
 	// Get The Value From the pointer
-	_, err = con.Exec(sql, &newTransaction.TransactionTotal,
-		&newTransaction.TransactionPIC,
-		&newTransaction.TransactionId)
+	_, err = con.Exec(sql, newTransaction.TransactionTotal,
+		newTransaction.TransactionPIC,
+		newTransaction.TransactionId)
 
 	if err != nil {
 		return newTransaction, err

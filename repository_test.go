@@ -49,7 +49,7 @@ func TestInsert(t *testing.T) {
 	transactionsRepository := &TransactionsRepositoryImpl{
 		DbTools: dbtools}
 
-	newTransaction := &Transaction{}
+	newTransaction := Transaction{}
 	newTransaction.TransactionId = IdForTest()
 	newTransaction.TransactionTotal = 150.0
 	newTransaction.TransactionPIC = "JRX"
@@ -71,7 +71,7 @@ func TestUpdate(t *testing.T) {
 	transactionsRepository := &TransactionsRepositoryImpl{
 		DbTools: dbtools}
 
-	newTransaction := &Transaction{}
+	newTransaction := Transaction{}
 	newTransaction.TransactionId = IdForTest()
 	newTransaction.TransactionTotal = 170.0
 	newTransaction.TransactionPIC = "JRX"
